@@ -196,7 +196,6 @@ vim.keymap.set('n', '<leader>tl', '<C-w><C-v>', { desc = 'Open vertically' })
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Toggle the terminal window
-vim.keymap.set('n', '<leader>tt', ':ToggleTerm<CR>', { desc = 'Toggle Terminal', noremap = true, silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
