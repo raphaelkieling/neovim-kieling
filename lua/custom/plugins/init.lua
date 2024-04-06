@@ -2,4 +2,11 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+  require 'custom.plugins.colorscheme',
+  require 'custom.plugins.tabs',
+  require 'custom.plugins.statusbar',
+  'github/copilot.vim',
+  -- 'xiyaowong/transparent.nvim',
+  'ThePrimeagen/vim-be-good',
+}

@@ -157,6 +157,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 40
 
+vim.opt.termguicolors = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -197,6 +199,13 @@ vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = tru
 
 -- Toggle the terminal window
 vim.keymap.set('n', '<S-t>', ':ToggleTerm<CR>', { desc = 'Toggle Terminal', noremap = true, silent = true })
+
+-- Hop configuration
+-- Changing the default f keyword
+vim.api.nvim_set_keymap('', 'f', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+
+-- Pattern Matching with t keyword
+vim.api.nvim_set_keymap('n', 't', '<cmd>HopPattern<CR>', { noremap = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -309,6 +318,19 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
     branch = '0.1.x',
+    opts = {
+      defaults = {
+        sorting_strategy = 'ascending',
+        layout_strategy = 'flex',
+        layout_config = {
+          horizontal = { preview_cutoff = 80, preview_width = 0.55 },
+          vertical = { mirror = true, preview_cutoff = 25 },
+          prompt_position = 'top',
+          width = 0.87,
+          height = 0.80,
+        },
+      },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -747,25 +769,6 @@ require('lazy').setup({
       }
     end,
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -854,7 +857,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -862,24 +865,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
-  {
-    'romgrk/barbar.nvim',
-    dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
-      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
-    },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
-    opts = {
-      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
-      animation = true,
-      -- insert_at_start = true,
-      -- …etc.
-    },
-    version = '^1.0.0', -- optional: only update when a new 1.x version is released
-  },
+  { import = 'custom.plugins' },
   {
     'nvim-tree/nvim-tree.lua',
     version = '*',
@@ -891,6 +877,7 @@ require('lazy').setup({
       require('nvim-tree').setup {}
     end,
   },
+  -- It's just a tag name in the top / right side, showing the name of the file
   {
     'b0o/incline.nvim',
     config = function()
@@ -900,27 +887,39 @@ require('lazy').setup({
     event = 'VeryLazy',
   },
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup {}
-      local Terminal = require('toggleterm.terminal').Terminal
-      local lazygit = Terminal:new { cmd = 'lazygit', hidden = true }
-
-      function _lazygit_toggle()
-        lazygit:toggle()
-      end
-
-      vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _lazygit_toggle()<CR>', { noremap = true, silent = true })
-    end,
-  },
-  {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = true,
   },
-  'github/copilot.vim',
-  'xiyaowong/transparent.nvim',
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      'MunifTanjim/nui.nvim',
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      'rcarriga/nvim-notify',
+    },
+  },
+  {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require('hop').setup { keys = 'etovxqpdygfblzhckisuran' }
+    end,
+  },
+  {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup {}
+    end,
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
