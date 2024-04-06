@@ -10,6 +10,26 @@ return {
   opts = {
     -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
     animation = true,
+    gitsigns = {
+      added = { enabled = true, icon = '+' },
+      changed = { enabled = true, icon = '~' },
+      deleted = { enabled = true, icon = '-' },
+    },
+    modified = { button = 'C' },
+    sidebar_filetypes = {
+      -- Use the default values: {event = 'BufWinLeave', text = '', align = 'left'}
+      NvimTree = true,
+      -- Or, specify the text used for the offset:
+      undotree = {
+        text = 'undotree',
+        align = 'center', -- *optionally* specify an alignment (either 'left', 'center', or 'right')
+      },
+      -- Or, specify the event which the sidebar executes when leaving:
+      ['neo-tree'] = { event = 'BufWipeout' },
+      -- Or, specify all three
+      Outline = { event = 'BufWinLeave', text = 'symbols-outline', align = 'right' },
+    },
+
     -- insert_at_start = true,
     -- …etc.
   },
