@@ -9,4 +9,5 @@ return {
   'github/copilot.vim',
   -- 'xiyaowong/transparent.nvim',
   'ThePrimeagen/vim-be-good',
+  'tpope/vim-fugitive',
 }
