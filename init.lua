@@ -106,7 +106,7 @@ vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.smartindent = true
 vim.opt.incsearch = true
 
@@ -204,6 +204,12 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>tj', '<C-w><C-s>', { desc = 'Open hortizontally' })
 vim.keymap.set('n', '<leader>tl', '<C-w><C-v>', { desc = 'Open vertically' })
 vim.api.nvim_set_keymap('n', '<leader>e', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', {})
+vim.keymap.set('n', '<C-u>', '<C-u>zz', {})
+
+-- Very important to avoid hit Ctrl + Z by mistake during the Ctrl + D operation :)
+-- Will avoid suspending Neovim and create the annoying swap file
+vim.keymap.set('n', '<C-z>', '<nop>', {})
 
 -- Toggle the terminal window
 vim.keymap.set('n', '<S-t>', ':ToggleTerm<CR>', { desc = 'Toggle Terminal', noremap = true, silent = true })
@@ -388,7 +394,14 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        pickers = { git_files = { recurse_submodules = true } },
+        defaults = {
+          file_ignore_patterns = {
+            'node_modules/.*',
+            '.git/.*',
+          },
+        },
+
+        pickers = { git_files = { recurse_submodules = true, live_grep = { file_ignore_patterns = { 'node_modules', '.git', '.venv' } } } },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
