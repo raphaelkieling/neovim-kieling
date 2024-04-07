@@ -161,6 +161,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 40
 
 vim.opt.termguicolors = true
+vim.opt.laststatus = 3
 
 -- -- Use treesitter for folding
 -- vim.opt.foldmethod = 'expr'
