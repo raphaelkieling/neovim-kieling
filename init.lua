@@ -208,7 +208,7 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', {})
 vim.keymap.set('n', '<C-u>', '<C-u>zz', {})
 
 -- Very important to avoid hit Ctrl + Z by mistake during the Ctrl + D operation :)
--- Will avoid suspending Neovim and create the annoying swap file
+-- Will avoid suspending Neovim and create the annoying swap files
 vim.keymap.set('n', '<C-z>', '<nop>', {})
 
 -- Toggle the terminal window
