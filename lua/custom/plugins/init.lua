@@ -6,8 +6,9 @@ return {
   require 'custom.plugins.colorscheme',
   require 'custom.plugins.tabs',
   require 'custom.plugins.statusbar',
+  require 'custom.plugins.jump',
   'github/copilot.vim',
-  -- 'xiyaowong/transparent.nvim',
+  'xiyaowong/transparent.nvim',
   'ThePrimeagen/vim-be-good',
   'tpope/vim-fugitive',
 }
