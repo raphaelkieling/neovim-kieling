@@ -215,10 +215,6 @@ vim.keymap.set('n', '<C-z>', '<nop>', {})
 -- Toggle the terminal window
 vim.keymap.set('n', '<S-t>', ':ToggleTerm<CR>', { desc = 'Toggle Terminal', noremap = true, silent = true })
 
--- Hop configuration
-vim.api.nvim_set_keymap('', '<Tab>', '<cmd>HopChar1MW<CR>', {})
--- vim.api.nvim_set_keymap('n', 't', '<cmd>HopPattern<CR>', { noremap = true })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -904,6 +900,17 @@ require('lazy').setup({
     'akinsho/toggleterm.nvim',
     version = '*',
     config = true,
+  },
+  -- Automatically close brackets, quotes, etc.
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+  },
+  -- For git related commands
+  {
+    'tpope/vim-fugitive',
+    version = '*',
   },
 }, {
   ui = {
