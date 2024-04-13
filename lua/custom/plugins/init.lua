@@ -4,9 +4,7 @@
 -- See the kickstart.nvim README for more information
 
 local plugin_bracket = require 'custom.ownplugins.bracket'
-plugin_bracket.setup {
-  keys = { '<>', '{}', '()', '[]' },
-}
+plugin_bracket.setup {}
 
 return {
   require 'custom.plugins.colorscheme',
