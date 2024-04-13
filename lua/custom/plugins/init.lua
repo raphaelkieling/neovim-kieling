@@ -2,6 +2,12 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
+
+local plugin_bracket = require 'custom.ownplugins.bracket'
+plugin_bracket.setup {
+  keys = { '<>', '{}', '()', '[]' },
+}
+
 return {
   require 'custom.plugins.colorscheme',
   require 'custom.plugins.tabs',
