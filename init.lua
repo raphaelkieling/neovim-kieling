@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 require 'globals'
 
 -- Disable Netrw
@@ -224,11 +226,9 @@ require('lazy').setup({
       -- Document existing key chains
       require('which-key').register {
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        -- ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]abs', _ = 'which_key_ignore' },
+        ['<leader>r'] = { name = '[R]un', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -427,11 +427,11 @@ require('lazy').setup({
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          -- map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>cd', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -439,7 +439,7 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>cr', vim.lsp.buf.rename, '[R]e[n]ame')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
@@ -692,7 +692,16 @@ require('lazy').setup({
     end,
   },
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('todo-comments').setup { signs = false }
+
+      vim.api.nvim_set_keymap('n', '<leader>ct', '<cmd>TodoTelescope<CR>', { noremap = true, silent = true, desc = 'Search [T]odo' })
+    end,
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -734,7 +743,7 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -814,6 +823,7 @@ require('lazy').setup({
     },
     config = function()
       require('nvim-tree').setup {
+        update_cwd = true,
         actions = {
           open_file = {
             quit_on_open = true,
@@ -821,6 +831,7 @@ require('lazy').setup({
         },
         update_focused_file = {
           enable = true,
+          update_cwd = true,
         },
         filters = {
           dotfiles = false,
@@ -869,11 +880,12 @@ require('lazy').setup({
         },
       }
 
-      vim.keymap.set('n', '<leader>a', function()
+      vim.keymap.set('n', '<leader>ha', function()
+        print 'Harpoon Added! 🔱'
         harpoon:list():add()
       end, { desc = 'Harpoon Add' })
 
-      vim.keymap.set('n', '<C-e>', function()
+      vim.keymap.set('n', '<leader>he', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, { desc = 'Open harpoon window' })
 
@@ -889,6 +901,13 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>4', function()
         harpoon:list():select(4)
       end, { desc = 'Harpoon (4)' })
+    end,
+  },
+  {
+    'CRAG666/code_runner.nvim',
+    config = function()
+      require('code_runner').setup {}
+      vim.keymap.set('n', '<leader>r', ':RunCode<CR>', { noremap = true, silent = false })
     end,
   },
 }, {})
